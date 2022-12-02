@@ -1,4 +1,5 @@
 #@ load("@ytt:overlay", "overlay")
+#@ load("@ytt:data", "data")
 #@ def customize():
 
 #@overlay/match by=overlay.subset({"kind":"PackageInstall","metadata":{"name":"grype-scanner"}}),expects="1+"
@@ -10,10 +11,13 @@ metadata:
 
 #@overlay/match by=overlay.subset({"kind":"Secret","metadata":{"name":"grype-scanner"}}),expects="1+"
 ---
-spec:
+stringData:
   #@overlay/match missing_ok=True
-  db:
-    #@overlay/match missing_ok=True
-    dbUpdateUrl: example.cluster.internal/listing.json
+  #@yaml/text-templated-strings
+  values.yml: |
+    namespace: (@= data.values.name @)
+    targetImagePullSecret: registries-credentials
+    db:
+      dbUpdateUrl: example.cluster.internal/listing.json
 
 #@ end
