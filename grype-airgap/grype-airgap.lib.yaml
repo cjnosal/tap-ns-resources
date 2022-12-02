@@ -11,11 +11,11 @@ metadata:
 
 #@overlay/match by=overlay.subset({"kind":"Secret","metadata":{"name":"grype-scanner"}}),expects="1+"
 ---
+#@overlay/match missing_ok=True
 stringData:
   #@overlay/match missing_ok=True
-  #@yaml/text-templated-strings
   values.yml: |
-    namespace: (@= data.values.name @)
+    namespace: provisioned #! FIXME
     targetImagePullSecret: registries-credentials
     db:
       dbUpdateUrl: example.cluster.internal/listing.json
