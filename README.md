@@ -9,9 +9,15 @@ namespace_provisioner:
   additional_sources:
   - git:
       ref: origin/main
-      subPath: grype-airgap
+      subPath: grype-airgap/overlay
       url: https://github.com/xtreme-conor-nosal/tap-ns-resources.git
     path: _ytt_lib/customize
+  #OR
+  - git:
+      ref: origin/main
+      subPath: grype-airgap/replace
+      url: https://github.com/xtreme-conor-nosal/tap-ns-resources.git
+    path: _ytt_lib/grype-airgap
 shared:
   ca_cert_data: |
     # PEM Certs

@@ -1,0 +1,35 @@
+---
+apiVersion: packaging.carvel.dev/v1alpha1
+kind: PackageInstall
+metadata:
+  #! name will be updated by the expansion template
+  name: "grype-scanner"
+  namespace: tap-install
+  annotations:
+    kapp.k14s.io/create-strategy: fallback-on-update
+    ext.packaging.carvel.dev/ytt-paths-from-secret-name.0: grype-airgap
+spec:
+  packageRef:
+    refName: grype.scanning.apps.tanzu.vmware.com
+    versionSelection:
+      constraints: ">1.0.0"
+      prereleases: {}
+  serviceAccountName: tap-install-sa
+  values:
+  - secretRef:
+      name: #@ "grype-scanner-" + data.values.name
+---
+apiVersion: v1
+kind: Secret
+metadata:
+  name: grype-scanner
+  namespace: tap-install
+  annotations:
+    kapp.k14s.io/create-strategy: fallback-on-update
+stringData:
+  #@yaml/text-templated-strings
+  values.yml: |
+    namespace: (@= data.values.name @)
+    targetImagePullSecret: registries-credentials
+    db:
+      dbUpdateUrl: example.cluster.internal/listing.json
