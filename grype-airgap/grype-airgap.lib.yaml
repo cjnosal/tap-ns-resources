@@ -1,20 +1,19 @@
 #@ load("@ytt:overlay", "overlay")
 #@ def customize():
 
-#@overlay/match by=overlay.subset({"kind":"ScanTemplate"}),expects="1+"
+#@overlay/match by=overlay.subset({"kind":"PackageInstall","metadata":{"name":"grype-scanner"}}),expects="1"
+---
+metadata:
+  annotations:
+    #@overlay/match missing_ok=True
+    ext.packaging.carvel.dev/ytt-paths-from-secret-name.0: grype-airgap
+
+#@overlay/match by=overlay.subset({"kind":"Secret","metadata":{"name":"grype-scanner"}}),expects="1"
 ---
 spec:
-  template:
-    initContainers:
-      #@overlay/match by=overlay.subset({"name": "scan-plugin"}), expects="1+"
-      - name: scan-plugin
-        #@overlay/match missing_ok=True
-        env:
-          #@overlay/append
-          - name: GRYPE_CHECK_FOR_APP_UPDATE
-            value: "false"
-          #@overlay/append
-          - name: GRYPE_DB_MAX_ALLOWED_BUILT_AGE #! see note on best practices
-            value: "120h"
+  #@overlay/match missing_ok=True
+  db:
+    #@overlay/match missing_ok=True
+    dbUpdateUrl: example.cluster.internal/listing.json
 
 #@ end
