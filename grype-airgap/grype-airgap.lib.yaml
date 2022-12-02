@@ -1,14 +1,14 @@
 #@ load("@ytt:overlay", "overlay")
 #@ def customize():
 
-#@overlay/match by=overlay.subset({"kind":"PackageInstall","metadata":{"name":"grype-scanner"}}),expects="1"
+#@overlay/match by=overlay.subset({"kind":"PackageInstall","metadata":{"name":"grype-scanner"}}),expects="1+"
 ---
 metadata:
   annotations:
     #@overlay/match missing_ok=True
     ext.packaging.carvel.dev/ytt-paths-from-secret-name.0: grype-airgap
 
-#@overlay/match by=overlay.subset({"kind":"Secret","metadata":{"name":"grype-scanner"}}),expects="1"
+#@overlay/match by=overlay.subset({"kind":"Secret","metadata":{"name":"grype-scanner"}}),expects="1+"
 ---
 spec:
   #@overlay/match missing_ok=True
