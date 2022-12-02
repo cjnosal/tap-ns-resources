@@ -1,5 +1,9 @@
 # tap-ns-resources
 
+1. update kapp-overlay for fields not in the grype package schema
+2. update grype-airgap.lib-yaml to reference kapp-overlay and override values in the grype package schema
+3. apply kapp-overlay.yaml to the tap-install namespace
+4. Update tap-values to point at the grype-airgap overlay and provide CA cert
 ```
 namespace_provisioner:
   additional_sources:
@@ -8,9 +12,6 @@ namespace_provisioner:
       subPath: grype-airgap
       url: https://github.com/xtreme-conor-nosal/tap-ns-resources.git
     path: _ytt_lib/customize
-grype:
-  db:
-    dbUpdateUrl: example.com/listing.json
 shared:
   ca_cert_data: |
     # PEM Certs

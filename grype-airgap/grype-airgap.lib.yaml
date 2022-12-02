@@ -15,7 +15,7 @@ metadata:
 stringData:
   #@overlay/match missing_ok=True
   values.yml: |
-    namespace: provisioned #! FIXME
+    namespace: provisioned #! FIXME need escaped text templating for provisioner to provide namespace
     targetImagePullSecret: registries-credentials
     db:
       dbUpdateUrl: example.cluster.internal/listing.json
